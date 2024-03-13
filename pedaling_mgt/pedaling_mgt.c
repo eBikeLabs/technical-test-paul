@@ -57,7 +57,8 @@ float get_average_pedaling_speed(void){
     //Since the buffer is of size n_magnet+1,
     //cyclic_buff[get_next_pos()] gives the previous value of cyclic_buff[buff_pos]
     const float delta_t = cyclic_buff[buff_pos] - cyclic_buff[get_next_pos()];
-    return 60.0f*1e6f / delta_t;
+    return (delta_t == 0.0f) ? 0.0 :
+                               60.0f*1e6f / delta_t;
 }
 
 void new_magnet_cb(void){
