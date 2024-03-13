@@ -50,9 +50,9 @@ float get_pedaling_speed(void){
 
 float get_average_pedaling_speed(void){
     if(!is_buff_full){
-        //If we have done less than one rotation,
-        //We don't compute the average speed.
-        return 0.0f;
+        const float delta_t = cyclic_buff[buff_pos] - cyclic_buff[0];
+        return (delta_t == 0.0f) ? 0.0f
+                                 : 60.0f*1e6f*(buff_pos) / (n_magnet*delta_t);
     }
     //Since the buffer is of size n_magnet+1,
     //cyclic_buff[get_next_pos()] gives the previous value of cyclic_buff[buff_pos]
