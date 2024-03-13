@@ -9,9 +9,9 @@
 #include <stdbool.h>
 
 //Cyclical buffer of size 13.
-//We allocate one extra location (13 instead of 12)
-//to be able to compute the average speed, keeping track
-//of the current magnet previous activation value.
+//We allocate one extra memory location (13 instead of 12)
+//to be able to compute the average speed.
+//Indeed, we keep track of the current magnet previous activation value.
 #define n_magnet 12u
 static uint32_t cyclic_buff[n_magnet+1u]={0u};
 static uint8_t buff_pos = n_magnet; //Start at the end of the buffer
@@ -40,8 +40,6 @@ static uint8_t get_next_pos(void){
 float get_pedaling_speed(void){
     if(!is_buff_full && (buff_pos < 1u || buff_pos == n_magnet)){
         //Not enough data to compute pedaling speed.
-        //we test buff_pos == n_magnet because buff_pos is
-        //set to n_magnet at init
         return 0.0f;
     }
     const float delta_t = cyclic_buff[buff_pos] - cyclic_buff[get_prev_pos()];
@@ -57,7 +55,7 @@ float get_average_pedaling_speed(void){
     //Since the buffer is of size n_magnet+1,
     //cyclic_buff[get_next_pos()] gives the previous value of cyclic_buff[buff_pos]
     const float delta_t = cyclic_buff[buff_pos] - cyclic_buff[get_next_pos()];
-    return (delta_t == 0.0f) ? 0.0 :
+    return (delta_t == 0.0f) ? 0.0f :
                                60.0f*1e6f / delta_t;
 }
 
