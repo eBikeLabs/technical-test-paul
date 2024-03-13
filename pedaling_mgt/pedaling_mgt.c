@@ -17,11 +17,19 @@ static uint32_t cyclic_buff[n_magnet+1u]={0u};
 static uint8_t buff_pos = n_magnet; //Start at the end of the buffer
 static bool is_buff_full = false;
 
+/**
+ * @brief get_prev_pos gets the previous cyclical buffer index.
+ * @return the index preceding buff_pos.
+ */
 static uint8_t get_prev_pos(void){
     return (buff_pos == 0u) ? n_magnet
                             : buff_pos-1u;
 }
 
+/**
+ * @brief get_next_pos gets the next cyclical buffer index.
+ * @return the index following buff_pos.
+ */
 static uint8_t get_next_pos(void){
     return (buff_pos == n_magnet) ? 0u
                                   : buff_pos+1u;
